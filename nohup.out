@@ -1,0 +1,7 @@
+Forwarding from 127.0.0.1:5672 -> 5672
+Forwarding from [::1]:5672 -> 5672
+Forwarding from 127.0.0.1:15672 -> 15672
+Forwarding from [::1]:15672 -> 15672
+Handling connection for 5672
+Handling connection for 5672
+E0527 21:29:06.593138   14264 portforward.go:385] error copying from local connection to remote stream: read tcp4 127.0.0.1:5672->127.0.0.1:39140: read: connection reset by peer

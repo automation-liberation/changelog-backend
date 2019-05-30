@@ -1,0 +1,5 @@
+celery
+pytest
+pytest-cov
+python-dotenv
+mongoengine
