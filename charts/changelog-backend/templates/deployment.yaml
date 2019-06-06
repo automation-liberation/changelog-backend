@@ -43,15 +43,14 @@ spec:
                   name: mongodb-uri
                   key: uri
         - name: {{ .Chart.Name }}-mongodb
-          image: docker.io/mongo:latest
+          image: mongo:latest
           imagePullPolicy: Always
           ports:
             - name: mongodb
               containerPort: 27017
           volumeMounts:
             - name: data
-              mountPath: /data
-              subPath: ""
+              mountPath: /data/db
       volumes:
       - name: data
         persistentVolumeClaim:

@@ -1,7 +1,7 @@
 image:
   registry: irori.johansson.tech
   package: automation-liberation/changelog-backend
-  tag: 0.1.0-patch1
+  tag: 0.1.0-patch2
 changelog:
   Fixed:
-    - Get all changelog entries now returns a dict
+    - Mongodb is no acctually persistent
