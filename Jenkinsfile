@@ -4,6 +4,7 @@ def properties
 podTemplate(label: label, containers: [
     containerTemplate(name: 'python', image: 'python:3.7', command: 'cat', ttyEnabled: true),
     containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:v2.14.0', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'deployment-helper', image: 'irori.johansson.tech/automation-liberation/deployment-helper', command: 'cat', ttyEnabled: true),
     containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
     ],
 volumes: [
@@ -13,7 +14,7 @@ volumes: [
         stage('Build') {
             git 'https://github.com/automation-liberation/changelog-backend.git'
             script {
-                properties = readYaml file: "jenkins-properties.yaml"
+                properties = readYaml file: "build-properties.yaml"
             }
             container('python') {
                 sh 'pip install -r requirements.txt'
@@ -39,6 +40,11 @@ volumes: [
                 dir('charts') {
                     sh "helm upgrade changelog-backend changelog-backend --install --set image.tag=${properties.image.tag}"
                 }
+            }
+        }
+        stage('Update Changelog') {
+            container('deployment-helper') {
+                sh 'python helper.py changelog -p build-properties.yaml'
             }
         }
     }
