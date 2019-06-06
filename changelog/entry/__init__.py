@@ -9,7 +9,7 @@ logger = logging.getLogger()
 
 @celery.task
 def get(changelog_entry_id):
-    return {"entries": json.loads(ChangelogEntry.objects.get(id=changelog_entry_id).to_json())}
+    return json.loads(ChangelogEntry.objects.get(id=changelog_entry_id).to_json())
 
 
 @celery.task

@@ -44,7 +44,7 @@ volumes: [
         }
         stage('Update Changelog') {
             container('deployment-helper') {
-                sh 'python helper.py changelog -p build-properties.yaml'
+                sh '/app/venv/bin/python /app/helper.py changelog -p build-properties.yaml'
             }
         }
     }

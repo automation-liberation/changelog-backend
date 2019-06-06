@@ -14,4 +14,4 @@ def get(service=None, version=None):
         entries = entries.filter(service__iexact=service)
     if version:
         entries = entries.filter(version=version)
-    return json.loads(entries.to_json())
+    return {"entries": json.loads(entries.to_json())}
