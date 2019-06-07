@@ -4,7 +4,7 @@ def properties
 podTemplate(label: label, containers: [
     containerTemplate(name: 'python', image: 'python:3.7', command: 'cat', ttyEnabled: true),
     containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:v2.14.0', command: 'cat', ttyEnabled: true),
-    containerTemplate(name: 'deployment-helper', image: 'irori.johansson.tech/automation-liberation/deployment-helper', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'deployment-helper', image: 'irori.johansson.tech/automation-liberation/deployment-helper:latest', command: 'cat', ttyEnabled: true),
     containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
     ],
 volumes: [
@@ -29,7 +29,8 @@ volumes: [
                     sh """
                         docker login -u ${USER} -p ${PASSWORD} https://${properties.image.registry}
                         docker build -t ${properties.image.registry}/${properties.image.package}:${properties.image.tag} .
-                        docker push ${properties.image.registry}/${properties.image.package}:${properties.image.tag}
+                        docker tag ${properties.image.registry}/${properties.image.package}:${properties.image.tag} ${properties.image.registry}/${properties.image.package}:latest
+                        docker push ${properties.image.registry}/${properties.image.package}
                     """
                 }
                 sh "docker rmi ${properties.image.registry}/${properties.image.package}:${properties.image.tag}"
@@ -44,7 +45,7 @@ volumes: [
         }
         stage('Update Changelog') {
             container('deployment-helper') {
-                sh '/app/venv/bin/python /app/helper.py changelog -p build-properties.yaml'
+                sh 'deployment-helper changelog -p build-properties.yaml'
             }
         }
     }
